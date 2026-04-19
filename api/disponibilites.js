@@ -127,7 +127,7 @@ module.exports = async function handler(req, res) {
     }
 
     // Attendre le changement de mois
-    await page.waitForTimeout(2000);
+    await new Promise(r => setTimeout(r, 2000));
 
     const nextMonthData = await page.evaluate(() => {
       const allEls = document.querySelectorAll('.bubble-element');
