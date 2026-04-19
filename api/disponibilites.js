@@ -109,25 +109,63 @@ module.exports = async function handler(req, res) {
       return `${year}-${m}-${d}`;
     });
 
-    // Naviguer au mois suivant et récupérer aussi ces données
-    const nextMonthBtn = await page.$('button[class*="ionic-IonicIcon"]');
-    // Chercher le bouton ">" pour le mois suivant
-    const buttons = await page.$$('.bubble-element.ionic-IonicIcon');
-    for (const btn of buttons) {
-      const text = await page.evaluate(el => el.textContent.trim(), btn);
-      const rect = await page.evaluate(el => {
-        const r = el.getBoundingClientRect();
-        return { top: r.top, left: r.left };
-      }, btn);
-      // Le bouton "suivant" est généralement à droite
-      if (rect.left > 700 && rect.top > 500) {
-        await btn.click();
-        break;
+    // Naviguer au mois suivant : trouver le bouton ">" à droite du titre du mois
+    const currentTitle = calendarData.monthTitle;
+    await page.evaluate((currentTitle) => {
+      const allEls = document.querySelectorAll('.bubble-element');
+
+      // Trouver l'élément du titre du mois pour se repérer
+      let titleEl = null;
+      for (const el of allEls) {
+        if (el.textContent.trim() === currentTitle) {
+          titleEl = el;
+          break;
+        }
       }
+
+      if (!titleEl) return;
+      const titleRect = titleEl.getBoundingClientRect();
+
+      // Chercher tous les éléments cliquables à droite du titre, sur la même ligne
+      let bestBtn = null;
+      let bestLeft = Infinity;
+
+      for (const el of allEls) {
+        const rect = el.getBoundingClientRect();
+        // Doit être à droite du titre, sur la même ligne (±30px)
+        if (rect.left > titleRect.right &&
+            Math.abs(rect.top - titleRect.top) < 30 &&
+            rect.width < 60 && rect.height < 60 &&
+            rect.width > 5 && rect.height > 5) {
+          // Prendre le plus proche à droite du titre
+          if (rect.left < bestLeft) {
+            bestLeft = rect.left;
+            bestBtn = el;
+          }
+        }
+      }
+
+      if (bestBtn) bestBtn.click();
+    }, currentTitle);
+
+    // Attendre le changement de mois (vérifier que le titre change)
+    try {
+      await page.waitForFunction((oldTitle) => {
+        const allEls = document.querySelectorAll('.bubble-element');
+        for (const el of allEls) {
+          const text = el.textContent.trim();
+          if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
+            return text !== oldTitle;
+          }
+        }
+        return false;
+      }, { timeout: 5000 }, currentTitle);
+    } catch (e) {
+      // Si le titre ne change pas après 5s, on continue sans les données du mois suivant
     }
 
-    // Attendre le changement de mois
-    await new Promise(r => setTimeout(r, 2000));
+    // Attendre que les barres de couleur se chargent pour le nouveau mois
+    await new Promise(r => setTimeout(r, 1500));
 
     const nextMonthData = await page.evaluate(() => {
       const allEls = document.querySelectorAll('.bubble-element');
