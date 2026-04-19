@@ -346,9 +346,12 @@
 
   // --- Chargement des disponibilités depuis Horsicar ---
   async function loadUnavailableDates() {
+    // Afficher un état de chargement sur le calendrier
+    calendarDays.innerHTML = '<div class="calendar-loading">Chargement des disponibilités…</div>';
+
     try {
       const response = await fetch('/api/disponibilites');
-      if (!response.ok) return;
+      if (!response.ok) throw new Error('API error');
 
       const data = await response.json();
       UNAVAILABLE_DATES = data.unavailableDates || [];
@@ -360,6 +363,5 @@
   }
 
   // --- Init ---
-  renderCalendar();
   loadUnavailableDates();
 })();
