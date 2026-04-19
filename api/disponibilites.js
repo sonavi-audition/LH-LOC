@@ -109,44 +109,61 @@ module.exports = async function handler(req, res) {
       return `${year}-${m}-${d}`;
     });
 
-    // Naviguer au mois suivant : trouver le bouton ">" à droite du titre du mois
+    // Naviguer au mois suivant
     const currentTitle = calendarData.monthTitle;
-    await page.evaluate((currentTitle) => {
-      const allEls = document.querySelectorAll('.bubble-element');
 
-      // Trouver l'élément du titre du mois pour se repérer
-      let titleEl = null;
+    // Stratégie : trouver les 2 boutons Ionic (< et >) près du titre du mois
+    // Le bouton "suivant" est celui le plus à droite
+    const clicked = await page.evaluate(() => {
+      // Chercher tous les éléments Ionic icon (boutons flèches du calendrier)
+      const iconEls = document.querySelectorAll('.bubble-element.ionic-IonicIcon');
+      if (iconEls.length === 0) return 'no-ionic-icons';
+
+      // Trouver le titre du calendrier pour se repérer en Y
+      const allEls = document.querySelectorAll('.bubble-element');
+      let titleTop = 0;
       for (const el of allEls) {
-        if (el.textContent.trim() === currentTitle) {
-          titleEl = el;
+        const text = el.textContent.trim();
+        if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
+          titleTop = el.getBoundingClientRect().top;
           break;
         }
       }
 
-      if (!titleEl) return;
-      const titleRect = titleEl.getBoundingClientRect();
+      // Parmi les icônes Ionic, trouver celles proches du titre (même hauteur ±50px)
+      let rightMostIcon = null;
+      let rightMostLeft = -1;
 
-      // Chercher tous les éléments cliquables à droite du titre, sur la même ligne
-      let bestBtn = null;
-      let bestLeft = Infinity;
-
-      for (const el of allEls) {
-        const rect = el.getBoundingClientRect();
-        // Doit être à droite du titre, sur la même ligne (±30px)
-        if (rect.left > titleRect.right &&
-            Math.abs(rect.top - titleRect.top) < 30 &&
-            rect.width < 60 && rect.height < 60 &&
-            rect.width > 5 && rect.height > 5) {
-          // Prendre le plus proche à droite du titre
-          if (rect.left < bestLeft) {
-            bestLeft = rect.left;
-            bestBtn = el;
+      for (const icon of iconEls) {
+        const rect = icon.getBoundingClientRect();
+        if (titleTop > 0 && Math.abs(rect.top - titleTop) < 50) {
+          if (rect.left > rightMostLeft) {
+            rightMostLeft = rect.left;
+            rightMostIcon = icon;
           }
         }
       }
 
-      if (bestBtn) bestBtn.click();
-    }, currentTitle);
+      // Si pas trouvé par proximité du titre, prendre le dernier Ionic icon de la page
+      if (!rightMostIcon && iconEls.length >= 2) {
+        // Les boutons < et > sont généralement les 2 derniers ou les 2 seuls
+        // Prendre celui le plus à droite
+        let maxLeft = -1;
+        for (const icon of iconEls) {
+          const rect = icon.getBoundingClientRect();
+          if (rect.left > maxLeft) {
+            maxLeft = rect.left;
+            rightMostIcon = icon;
+          }
+        }
+      }
+
+      if (rightMostIcon) {
+        rightMostIcon.click();
+        return 'clicked-at-' + Math.round(rightMostIcon.getBoundingClientRect().left);
+      }
+      return 'no-button-found';
+    });
 
     // Attendre le changement de mois (vérifier que le titre change)
     try {
@@ -159,13 +176,13 @@ module.exports = async function handler(req, res) {
           }
         }
         return false;
-      }, { timeout: 5000 }, currentTitle);
+      }, { timeout: 8000 }, currentTitle);
     } catch (e) {
-      // Si le titre ne change pas après 5s, on continue sans les données du mois suivant
+      // Si le titre ne change pas après 8s, on continue sans les données du mois suivant
     }
 
     // Attendre que les barres de couleur se chargent pour le nouveau mois
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 2000));
 
     const nextMonthData = await page.evaluate(() => {
       const allEls = document.querySelectorAll('.bubble-element');
@@ -224,7 +241,13 @@ module.exports = async function handler(req, res) {
     const result = {
       unavailableDates: [...new Set(unavailableDates)].sort(),
       lastUpdated: new Date().toISOString(),
-      source: 'horsicar'
+      source: 'horsicar',
+      _debug: {
+        currentMonth: calendarData.monthTitle,
+        nextMonth: nextMonthData.monthTitle || 'not-found',
+        nextMonthDays: nextMonthData.unavailableDays,
+        clickResult: clicked
+      }
     };
 
     // Mettre en cache
