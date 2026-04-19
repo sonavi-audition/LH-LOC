@@ -112,57 +112,54 @@ module.exports = async function handler(req, res) {
     // Naviguer au mois suivant
     const currentTitle = calendarData.monthTitle;
 
-    // Stratégie : trouver les 2 boutons Ionic (< et >) près du titre du mois
-    // Le bouton "suivant" est celui le plus à droite
+    // Stratégie : trouver TOUS les éléments cliquables proches du titre du mois
+    // et cliquer sur celui le plus à droite (le bouton ">")
     const clicked = await page.evaluate(() => {
-      // Chercher tous les éléments Ionic icon (boutons flèches du calendrier)
-      const iconEls = document.querySelectorAll('.bubble-element.ionic-IonicIcon');
-      if (iconEls.length === 0) return 'no-ionic-icons';
-
-      // Trouver le titre du calendrier pour se repérer en Y
       const allEls = document.querySelectorAll('.bubble-element');
-      let titleTop = 0;
+
+      // Trouver le titre du calendrier
+      let titleEl = null;
+      let titleRect = null;
       for (const el of allEls) {
         const text = el.textContent.trim();
         if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
-          titleTop = el.getBoundingClientRect().top;
+          titleEl = el;
+          titleRect = el.getBoundingClientRect();
           break;
         }
       }
 
-      // Parmi les icônes Ionic, trouver celles proches du titre (même hauteur ±50px)
-      let rightMostIcon = null;
-      let rightMostLeft = -1;
+      if (!titleRect) return 'no-title-found';
 
-      for (const icon of iconEls) {
-        const rect = icon.getBoundingClientRect();
-        if (titleTop > 0 && Math.abs(rect.top - titleTop) < 50) {
-          if (rect.left > rightMostLeft) {
-            rightMostLeft = rect.left;
-            rightMostIcon = icon;
-          }
+      // Chercher tous les petits éléments sur la même ligne que le titre
+      // (boutons < et >) - ce sont des éléments de petite taille
+      let candidates = [];
+
+      for (const el of allEls) {
+        const rect = el.getBoundingClientRect();
+        // Même ligne que le titre (±40px), petite taille (bouton rond)
+        if (Math.abs(rect.top - titleRect.top) < 40 &&
+            rect.width > 10 && rect.width < 80 &&
+            rect.height > 10 && rect.height < 80 &&
+            el !== titleEl &&
+            !el.contains(titleEl) &&
+            !titleEl.contains(el)) {
+          candidates.push({
+            el,
+            left: rect.left,
+            text: el.textContent.trim().substring(0, 10)
+          });
         }
       }
 
-      // Si pas trouvé par proximité du titre, prendre le dernier Ionic icon de la page
-      if (!rightMostIcon && iconEls.length >= 2) {
-        // Les boutons < et > sont généralement les 2 derniers ou les 2 seuls
-        // Prendre celui le plus à droite
-        let maxLeft = -1;
-        for (const icon of iconEls) {
-          const rect = icon.getBoundingClientRect();
-          if (rect.left > maxLeft) {
-            maxLeft = rect.left;
-            rightMostIcon = icon;
-          }
-        }
-      }
+      if (candidates.length === 0) return 'no-candidates';
 
-      if (rightMostIcon) {
-        rightMostIcon.click();
-        return 'clicked-at-' + Math.round(rightMostIcon.getBoundingClientRect().left);
-      }
-      return 'no-button-found';
+      // Trier par position et prendre le plus à droite
+      candidates.sort((a, b) => b.left - a.left);
+      const nextBtn = candidates[0];
+      nextBtn.el.click();
+
+      return `clicked-at-${Math.round(nextBtn.left)}-text-${nextBtn.text}-total-${candidates.length}`;
     });
 
     // Attendre le changement de mois (vérifier que le titre change)
