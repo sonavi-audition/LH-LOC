@@ -10,12 +10,10 @@
     'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
   ];
 
-  // Dates indisponibles - mis à jour depuis Horsicar (calendrier visuel)
-  const UNAVAILABLE_DATES = [
-    '2026-04-20', '2026-04-21', '2026-04-24', '2026-04-25', '2026-04-26', '2026-04-27',
-    '2026-05-01', '2026-05-08',
-    '2026-06-14'
-  ];
+  // Google Calendar - dates indisponibles chargées dynamiquement
+  const GOOGLE_CALENDAR_ID = '3b24dbfe010c50b7909ea4f26c58bf5cc0e00321a932436b48e109972cb8d127@group.calendar.google.com';
+  const GOOGLE_API_KEY = 'AIzaSyB4qgbC3r5ydyMuBJp_gEmlZITjz0vZb_A';
+  let UNAVAILABLE_DATES = [];
 
   // Jours fériés (tarif WE appliqué : 135€)
   const JOURS_FERIES = [
@@ -348,6 +346,47 @@
     submitBtn.disabled = false;
   });
 
+  // --- Chargement Google Calendar ---
+  async function loadUnavailableDates() {
+    try {
+      const now = new Date();
+      const timeMin = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const timeMax = new Date(now.getFullYear() + 1, now.getMonth(), 1).toISOString();
+
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(GOOGLE_CALENDAR_ID)}/events?key=${GOOGLE_API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}&singleEvents=true&orderBy=startTime`;
+
+      const response = await fetch(url);
+      if (!response.ok) return;
+
+      const data = await response.json();
+      const dates = [];
+
+      for (const event of data.items || []) {
+        const start = event.start.date || event.start.dateTime?.split('T')[0];
+        const end = event.end.date || event.end.dateTime?.split('T')[0];
+        if (!start || !end) continue;
+
+        // Ajouter chaque jour de l'événement
+        const current = new Date(start + 'T00:00:00');
+        const endDate = new Date(end + 'T00:00:00');
+        // Pour les événements "all-day", Google Calendar met la date de fin au jour suivant
+        if (event.start.date) endDate.setDate(endDate.getDate() - 1);
+
+        while (current <= endDate) {
+          dates.push(formatDateISO(current));
+          current.setDate(current.getDate() + 1);
+        }
+      }
+
+      UNAVAILABLE_DATES = dates;
+    } catch (e) {
+      // En cas d'erreur réseau, le calendrier reste sans dates bloquées
+    }
+
+    renderCalendar();
+  }
+
   // --- Init ---
   renderCalendar();
+  loadUnavailableDates();
 })();
