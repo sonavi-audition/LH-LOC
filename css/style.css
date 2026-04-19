@@ -1087,10 +1087,39 @@ img {
 
 .calendar-loading {
   grid-column: 1 / -1;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 60px 20px;
+  gap: 16px;
+}
+
+.calendar-loading p {
   color: var(--color-text-light);
-  font-size: 1rem;
+  font-size: 0.95rem;
+}
+
+.loading-bar {
+  width: 200px;
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  width: 40%;
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 3px;
+  animation: loadingSlide 1.2s ease-in-out infinite;
+}
+
+@keyframes loadingSlide {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(150%); }
+  100% { transform: translateX(400%); }
 }
 
 .calendar-day {

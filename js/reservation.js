@@ -346,8 +346,12 @@
 
   // --- Chargement des disponibilités depuis Horsicar ---
   async function loadUnavailableDates() {
-    // Afficher un état de chargement sur le calendrier
-    calendarDays.innerHTML = '<div class="calendar-loading">Chargement des disponibilités…</div>';
+    // Afficher une barre de chargement animée
+    calendarDays.innerHTML = `
+      <div class="calendar-loading">
+        <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+        <p>Chargement des disponibilités…</p>
+      </div>`;
 
     try {
       const response = await fetch('/api/disponibilites');

@@ -3,9 +3,123 @@ const chromium = require('@sparticuz/chromium');
 
 const HORSICAR_URL = 'https://www.horsicar.com/annonce/1681165302412x125229945974847820';
 
-// Cache en mémoire (durée de vie : 1h)
+// Cache en mémoire
 let cache = { data: null, timestamp: 0 };
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+const MONTH_REGEX = /^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/;
+const MONTH_MAP = {
+  'Janvier': 0, 'Février': 1, 'Mars': 2, 'Avril': 3, 'Mai': 4, 'Juin': 5,
+  'Juillet': 6, 'Août': 7, 'Septembre': 8, 'Octobre': 9, 'Novembre': 10, 'Décembre': 11
+};
+
+// Extraire les jours indisponibles du mois actuellement affiché
+async function extractMonthData(page) {
+  return page.evaluate(() => {
+    const allEls = document.querySelectorAll('.bubble-element');
+    const dayCells = [];
+    const colorBars = [];
+    let monthTitle = '';
+
+    for (const el of allEls) {
+      const text = el.textContent.trim();
+      if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
+        monthTitle = text;
+        break;
+      }
+    }
+
+    for (const el of allEls) {
+      const rect = el.getBoundingClientRect();
+      const text = el.textContent.trim();
+      const bgComputed = getComputedStyle(el).backgroundColor;
+
+      if (rect.top > 500 && /^\d{1,2}$/.test(text) && rect.width < 90 && rect.height < 40) {
+        dayCells.push({ day: parseInt(text), top: Math.round(rect.top), left: Math.round(rect.left) });
+      }
+
+      if (rect.top > 500 && rect.height >= 3 && rect.height <= 25 && rect.width > 20) {
+        const isRed = bgComputed === 'rgb(230, 0, 78)';
+        const isGreen = bgComputed === 'rgb(20, 209, 162)';
+        if (isRed || isGreen) {
+          colorBars.push({ color: isRed ? 'red' : 'green', top: Math.round(rect.top), left: Math.round(rect.left) });
+        }
+      }
+    }
+
+    const unavailableDays = [];
+    for (const bar of colorBars) {
+      if (bar.color === 'red') {
+        const matchingCells = dayCells.filter(c => c.left === bar.left && c.top < bar.top);
+        const closest = matchingCells.sort((a, b) => b.top - a.top)[0];
+        if (closest) unavailableDays.push(closest.day);
+      }
+    }
+
+    return { monthTitle, unavailableDays };
+  });
+}
+
+// Cliquer sur le bouton "mois suivant" (>) et attendre le changement
+async function goToNextMonth(page, currentTitle) {
+  await page.evaluate(() => {
+    const allEls = document.querySelectorAll('.bubble-element');
+
+    // Trouver le titre du calendrier
+    let titleEl = null;
+    let titleRect = null;
+    for (const el of allEls) {
+      const text = el.textContent.trim();
+      if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
+        titleEl = el;
+        titleRect = el.getBoundingClientRect();
+        break;
+      }
+    }
+
+    if (!titleRect) return;
+
+    // Chercher les petits éléments sur la même ligne que le titre (boutons < et >)
+    let candidates = [];
+    for (const el of allEls) {
+      const rect = el.getBoundingClientRect();
+      if (Math.abs(rect.top - titleRect.top) < 40 &&
+          rect.width > 10 && rect.width < 80 &&
+          rect.height > 10 && rect.height < 80 &&
+          el !== titleEl &&
+          !el.contains(titleEl) &&
+          !titleEl.contains(el)) {
+        candidates.push({ el, left: rect.left });
+      }
+    }
+
+    // Cliquer sur le plus à droite (bouton >)
+    if (candidates.length > 0) {
+      candidates.sort((a, b) => b.left - a.left);
+      candidates[0].el.click();
+    }
+  });
+
+  // Attendre que le titre du mois change
+  try {
+    await page.waitForFunction((oldTitle) => {
+      const allEls = document.querySelectorAll('.bubble-element');
+      for (const el of allEls) {
+        const text = el.textContent.trim();
+        if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
+          return text !== oldTitle;
+        }
+      }
+      return false;
+    }, { timeout: 8000 }, currentTitle);
+  } catch (e) {
+    return false;
+  }
+
+  // Attendre le chargement des barres de couleur
+  await new Promise(r => setTimeout(r, 2000));
+  return true;
+}
 
 module.exports = async function handler(req, res) {
   // CORS
@@ -45,193 +159,29 @@ module.exports = async function handler(req, res) {
       return hasColorBar;
     }, { timeout: 20000 });
 
-    // Extraire le mois/année affiché
-    const calendarData = await page.evaluate(() => {
-      const allEls = document.querySelectorAll('.bubble-element');
-      const dayCells = [];
-      const colorBars = [];
+    const unavailableDates = [];
 
-      // Trouver le titre du mois (ex: "Avril 2026")
-      let monthTitle = '';
-      for (const el of allEls) {
-        const text = el.textContent.trim();
-        if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
-          monthTitle = text;
-          break;
+    // Scraper le mois en cours + les 4 mois suivants (5 mois au total)
+    for (let i = 0; i < 5; i++) {
+      const monthData = await extractMonthData(page);
+
+      if (monthData.monthTitle) {
+        const [mName, yStr] = monthData.monthTitle.split(' ');
+        const m = MONTH_MAP[mName];
+        const y = parseInt(yStr);
+
+        for (const day of monthData.unavailableDays) {
+          const mm = String(m + 1).padStart(2, '0');
+          const dd = String(day).padStart(2, '0');
+          unavailableDates.push(`${y}-${mm}-${dd}`);
         }
       }
 
-      for (const el of allEls) {
-        const rect = el.getBoundingClientRect();
-        const text = el.textContent.trim();
-        const bgComputed = getComputedStyle(el).backgroundColor;
-
-        if (rect.top > 500 && /^\d{1,2}$/.test(text) && rect.width < 90 && rect.height < 40) {
-          dayCells.push({ day: parseInt(text), top: Math.round(rect.top), left: Math.round(rect.left) });
-        }
-
-        if (rect.top > 500 && rect.height >= 3 && rect.height <= 25 && rect.width > 20) {
-          const isRed = bgComputed === 'rgb(230, 0, 78)';
-          const isGreen = bgComputed === 'rgb(20, 209, 162)';
-          if (isRed || isGreen) {
-            colorBars.push({ color: isRed ? 'red' : 'green', top: Math.round(rect.top), left: Math.round(rect.left) });
-          }
-        }
-      }
-
-      // Mapper les barres aux jours
-      const unavailableDays = [];
-      for (const bar of colorBars) {
-        if (bar.color === 'red') {
-          const matchingCells = dayCells.filter(c => c.left === bar.left && c.top < bar.top);
-          const closest = matchingCells.sort((a, b) => b.top - a.top)[0];
-          if (closest) unavailableDays.push(closest.day);
-        }
-      }
-
-      return { monthTitle, unavailableDays };
-    });
-
-    // Convertir le mois français en numéro
-    const monthMap = {
-      'Janvier': 0, 'Février': 1, 'Mars': 2, 'Avril': 3, 'Mai': 4, 'Juin': 5,
-      'Juillet': 6, 'Août': 7, 'Septembre': 8, 'Octobre': 9, 'Novembre': 10, 'Décembre': 11
-    };
-
-    const [monthName, yearStr] = calendarData.monthTitle.split(' ');
-    const month = monthMap[monthName];
-    const year = parseInt(yearStr);
-
-    // Construire les dates ISO
-    const unavailableDates = calendarData.unavailableDays.map(day => {
-      const m = String(month + 1).padStart(2, '0');
-      const d = String(day).padStart(2, '0');
-      return `${year}-${m}-${d}`;
-    });
-
-    // Naviguer au mois suivant
-    const currentTitle = calendarData.monthTitle;
-
-    // Stratégie : trouver TOUS les éléments cliquables proches du titre du mois
-    // et cliquer sur celui le plus à droite (le bouton ">")
-    const clicked = await page.evaluate(() => {
-      const allEls = document.querySelectorAll('.bubble-element');
-
-      // Trouver le titre du calendrier
-      let titleEl = null;
-      let titleRect = null;
-      for (const el of allEls) {
-        const text = el.textContent.trim();
-        if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
-          titleEl = el;
-          titleRect = el.getBoundingClientRect();
-          break;
-        }
-      }
-
-      if (!titleRect) return 'no-title-found';
-
-      // Chercher tous les petits éléments sur la même ligne que le titre
-      // (boutons < et >) - ce sont des éléments de petite taille
-      let candidates = [];
-
-      for (const el of allEls) {
-        const rect = el.getBoundingClientRect();
-        // Même ligne que le titre (±40px), petite taille (bouton rond)
-        if (Math.abs(rect.top - titleRect.top) < 40 &&
-            rect.width > 10 && rect.width < 80 &&
-            rect.height > 10 && rect.height < 80 &&
-            el !== titleEl &&
-            !el.contains(titleEl) &&
-            !titleEl.contains(el)) {
-          candidates.push({
-            el,
-            left: rect.left,
-            text: el.textContent.trim().substring(0, 10)
-          });
-        }
-      }
-
-      if (candidates.length === 0) return 'no-candidates';
-
-      // Trier par position et prendre le plus à droite
-      candidates.sort((a, b) => b.left - a.left);
-      const nextBtn = candidates[0];
-      nextBtn.el.click();
-
-      return `clicked-at-${Math.round(nextBtn.left)}-text-${nextBtn.text}-total-${candidates.length}`;
-    });
-
-    // Attendre le changement de mois (vérifier que le titre change)
-    try {
-      await page.waitForFunction((oldTitle) => {
-        const allEls = document.querySelectorAll('.bubble-element');
-        for (const el of allEls) {
-          const text = el.textContent.trim();
-          if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
-            return text !== oldTitle;
-          }
-        }
-        return false;
-      }, { timeout: 8000 }, currentTitle);
-    } catch (e) {
-      // Si le titre ne change pas après 8s, on continue sans les données du mois suivant
-    }
-
-    // Attendre que les barres de couleur se chargent pour le nouveau mois
-    await new Promise(r => setTimeout(r, 2000));
-
-    const nextMonthData = await page.evaluate(() => {
-      const allEls = document.querySelectorAll('.bubble-element');
-      const dayCells = [];
-      const colorBars = [];
-      let monthTitle = '';
-
-      for (const el of allEls) {
-        const text = el.textContent.trim();
-        if (/^(Janvier|Février|Mars|Avril|Mai|Juin|Juillet|Août|Septembre|Octobre|Novembre|Décembre)\s+\d{4}$/.test(text)) {
-          monthTitle = text;
-          break;
-        }
-      }
-
-      for (const el of allEls) {
-        const rect = el.getBoundingClientRect();
-        const text = el.textContent.trim();
-        const bgComputed = getComputedStyle(el).backgroundColor;
-
-        if (rect.top > 500 && /^\d{1,2}$/.test(text) && rect.width < 90 && rect.height < 40) {
-          dayCells.push({ day: parseInt(text), top: Math.round(rect.top), left: Math.round(rect.left) });
-        }
-
-        if (rect.top > 500 && rect.height >= 3 && rect.height <= 25 && rect.width > 20) {
-          const isRed = bgComputed === 'rgb(230, 0, 78)';
-          if (isRed) {
-            colorBars.push({ top: Math.round(rect.top), left: Math.round(rect.left) });
-          }
-        }
-      }
-
-      const unavailableDays = [];
-      for (const bar of colorBars) {
-        const matchingCells = dayCells.filter(c => c.left === bar.left && c.top < bar.top);
-        const closest = matchingCells.sort((a, b) => b.top - a.top)[0];
-        if (closest) unavailableDays.push(closest.day);
-      }
-
-      return { monthTitle, unavailableDays };
-    });
-
-    // Ajouter les dates du mois suivant
-    if (nextMonthData.monthTitle) {
-      const [nextMonthName, nextYearStr] = nextMonthData.monthTitle.split(' ');
-      const nextMonth = monthMap[nextMonthName];
-      const nextYear = parseInt(nextYearStr);
-
-      for (const day of nextMonthData.unavailableDays) {
-        const m = String(nextMonth + 1).padStart(2, '0');
-        const d = String(day).padStart(2, '0');
-        unavailableDates.push(`${nextYear}-${m}-${d}`);
+      // Passer au mois suivant (sauf pour le dernier)
+      if (i < 4) {
+        const title = monthData.monthTitle;
+        const changed = await goToNextMonth(page, title);
+        if (!changed) break; // Arrêter si la navigation échoue
       }
     }
 
