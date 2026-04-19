@@ -5,13 +5,13 @@ const HORSICAR_URL = 'https://www.horsicar.com/annonce/1681165302412x12522994597
 
 // Cache en mémoire (durée de vie : 1h)
 let cache = { data: null, timestamp: 0 };
-const CACHE_DURATION = 60 * 60 * 1000; // 1 heure
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
 module.exports = async function handler(req, res) {
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=7200');
+  res.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1800');
 
   // Retourner le cache s'il est frais
   if (cache.data && Date.now() - cache.timestamp < CACHE_DURATION) {
