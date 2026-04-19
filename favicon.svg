@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#2c5530"/>
+  <g transform="translate(6, 14)">
+    <!-- Carrosserie -->
+    <rect x="0" y="8" width="52" height="24" rx="4" fill="#c8a45a"/>
+    <!-- Cabine -->
+    <rect x="36" y="4" width="16" height="28" rx="4" fill="#1e3b22"/>
+    <!-- Pare-brise -->
+    <rect x="40" y="8" width="8" height="10" rx="2" fill="#a8d8ea"/>
+    <!-- Roues -->
+    <circle cx="12" cy="34" r="6" fill="#1e3b22"/>
+    <circle cx="12" cy="34" r="3" fill="#c8a45a"/>
+    <circle cx="42" cy="34" r="6" fill="#1e3b22"/>
+    <circle cx="42" cy="34" r="3" fill="#c8a45a"/>
+    <!-- Fenêtre chevaux -->
+    <rect x="6" y="12" width="8" height="8" rx="2" fill="#1e3b22"/>
+    <rect x="18" y="12" width="8" height="8" rx="2" fill="#1e3b22"/>
+  </g>
+</svg>
