@@ -278,47 +278,74 @@
 
   // Soumission formulaire
   const bookingForm = document.getElementById('bookingForm');
-  bookingForm.addEventListener('submit', function (e) {
+  bookingForm.addEventListener('submit', async function (e) {
     e.preventDefault();
+
+    const submitBtn = bookingForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Envoi en cours...';
+    submitBtn.disabled = true;
 
     const formData = new FormData(bookingForm);
     const days = getDayCount(startDate, endDate);
     const price = calculatePrice(startDate, endDate);
 
-    // Afficher le récap
-    const recap = document.getElementById('confirmationRecap');
-    recap.innerHTML = `
-      <div class="summary-row">
-        <span class="summary-label">Nom</span>
-        <span class="summary-value">${formData.get('firstName')} ${formData.get('lastName')}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Email</span>
-        <span class="summary-value">${formData.get('email')}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Téléphone</span>
-        <span class="summary-value">${formData.get('phone')}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Dates</span>
-        <span class="summary-value">${formatDateFR(startDate)} → ${formatDateFR(endDate)}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Durée</span>
-        <span class="summary-value">${days} jour${days > 1 ? 's' : ''}</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-label">Chevaux</span>
-        <span class="summary-value">${formData.get('horses')}</span>
-      </div>
-      <div class="summary-row summary-total">
-        <span class="summary-label">Estimation</span>
-        <span class="summary-value">${price}€ *</span>
-      </div>
-    `;
+    // Ajouter les infos de réservation au formulaire
+    formData.append('dateDepart', formatDateFR(startDate));
+    formData.append('dateRetour', formatDateFR(endDate));
+    formData.append('duree', `${days} jour${days > 1 ? 's' : ''}`);
+    formData.append('estimation', `${price}€`);
 
-    goToStep(3);
+    try {
+      const response = await fetch(bookingForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        // Afficher le récap
+        const recap = document.getElementById('confirmationRecap');
+        recap.innerHTML = `
+          <div class="summary-row">
+            <span class="summary-label">Nom</span>
+            <span class="summary-value">${formData.get('firstName')} ${formData.get('lastName')}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Email</span>
+            <span class="summary-value">${formData.get('email')}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Téléphone</span>
+            <span class="summary-value">${formData.get('phone')}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Dates</span>
+            <span class="summary-value">${formatDateFR(startDate)} → ${formatDateFR(endDate)}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Durée</span>
+            <span class="summary-value">${days} jour${days > 1 ? 's' : ''}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Chevaux</span>
+            <span class="summary-value">${formData.get('horses')}</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span class="summary-label">Estimation</span>
+            <span class="summary-value">${price}€ *</span>
+          </div>
+        `;
+        goToStep(3);
+      } else {
+        alert('Une erreur est survenue. Veuillez réessayer ou nous contacter par téléphone.');
+      }
+    } catch (error) {
+      alert('Erreur de connexion. Veuillez réessayer ou nous contacter par téléphone.');
+    }
+
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
   });
 
   // --- Init ---
