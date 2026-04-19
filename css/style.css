@@ -76,7 +76,7 @@ img {
 
 .btn-primary {
   background: var(--color-accent);
-  color: var(--color-primary-dark);
+  color: #ffffff;
 }
 
 .btn-primary:hover {
