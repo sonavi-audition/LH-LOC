@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Réservez le camion équestre LH LOC en ligne. Consultez les disponibilités et réservez en quelques clics.">
+  <title>Réservation - LH LOC</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav-logo">LH <span>LOC</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="camion.html">Le Camion</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="reservation.html" class="active">Réservation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="tel:0745288678" class="nav-phone">📞 07 45 28 86 78</a></li>
+        <li><a href="reservation.html" class="btn btn-primary nav-cta">Réserver</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero-badge">Réservation en ligne</span>
+      <h1>Réservez le véhicule</h1>
+      <p>Sélectionnez vos dates, consultez le tarif estimé et envoyez votre demande de réservation.</p>
+    </div>
+  </section>
+
+  <!-- ETAPES -->
+  <section class="section booking-section">
+    <div class="container">
+
+      <!-- Indicateur d'étapes -->
+      <div class="booking-steps">
+        <div class="step active" data-step="1">
+          <div class="step-number">1</div>
+          <span>Dates & tarif</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="2">
+          <div class="step-number">2</div>
+          <span>Coordonnées</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" data-step="3">
+          <div class="step-number">3</div>
+          <span>Confirmation</span>
+        </div>
+      </div>
+
+      <!-- ETAPE 1 : Calendrier + tarif -->
+      <div class="booking-panel" id="step1" style="display: block;">
+        <div class="booking-grid">
+          <div class="booking-calendar-wrapper">
+            <h3>Sélectionnez vos dates</h3>
+            <p class="booking-hint">Cliquez sur la date de départ puis sur la date de retour (ou la même date pour une journée).</p>
+            <div class="calendar">
+              <div class="calendar-header">
+                <button class="calendar-nav" id="prevMonth">&#10094;</button>
+                <h4 id="calendarTitle"></h4>
+                <button class="calendar-nav" id="nextMonth">&#10095;</button>
+              </div>
+              <div class="calendar-weekdays">
+                <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+              </div>
+              <div class="calendar-days" id="calendarDays"></div>
+            </div>
+            <div class="calendar-legend">
+              <div class="legend-item"><span class="legend-dot available"></span> Disponible</div>
+              <div class="legend-item"><span class="legend-dot unavailable"></span> Indisponible</div>
+              <div class="legend-item"><span class="legend-dot selected"></span> Sélectionné</div>
+            </div>
+          </div>
+          <div class="booking-summary-card">
+            <h3>Votre sélection</h3>
+            <div class="summary-row">
+              <span class="summary-label">Départ</span>
+              <span class="summary-value" id="summaryStart">-</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Retour</span>
+              <span class="summary-value" id="summaryEnd">-</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Durée</span>
+              <span class="summary-value" id="summaryDuration">-</span>
+            </div>
+            <hr>
+            <div class="summary-row summary-total">
+              <span class="summary-label">Estimation</span>
+              <span class="summary-value" id="summaryPrice">-</span>
+            </div>
+            <p class="summary-note">* 200 km inclus par jour. Au-delà, voir les <a href="tarifs.html">tarifs supplémentaires</a>.</p>
+            <div class="summary-phone-cta" id="phoneCta" style="display: none;">
+              <p>Pour les locations de plus de 5 jours, contactez-nous directement :</p>
+              <a href="tel:0745288678" class="btn btn-primary btn-full">📞 07 45 28 86 78</a>
+            </div>
+            <button class="btn btn-primary btn-full" id="toStep2" disabled>Continuer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPE 2 : Coordonnées -->
+      <div class="booking-panel" id="step2" style="display: none;">
+        <h3 class="panel-title">Vos coordonnées</h3>
+        <form class="booking-form" id="bookingForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="lastName">Nom *</label>
+              <input type="text" id="lastName" name="lastName" required placeholder="Votre nom">
+            </div>
+            <div class="form-group">
+              <label for="firstName">Prénom *</label>
+              <input type="text" id="firstName" name="firstName" required placeholder="Votre prénom">
+            </div>
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" required placeholder="votre@email.com">
+            </div>
+            <div class="form-group">
+              <label for="phone">Téléphone *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="06 00 00 00 00">
+            </div>
+            <div class="form-group full-width">
+              <label for="horses">Nombre de chevaux à transporter</label>
+              <select id="horses" name="horses">
+                <option value="1">1 cheval</option>
+                <option value="2">2 chevaux</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label for="message">Informations complémentaires</label>
+              <textarea id="message" name="message" rows="4" placeholder="Destination, besoins spécifiques, questions..."></textarea>
+            </div>
+          </div>
+          <div class="form-check">
+            <label>
+              <input type="checkbox" id="acceptTerms" required>
+              <span>J'accepte les <a href="#" target="_blank">conditions générales de location</a> *</span>
+            </label>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="btn btn-outline" id="backToStep1">Retour</button>
+            <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ETAPE 3 : Confirmation -->
+      <div class="booking-panel" id="step3" style="display: none;">
+        <div class="confirmation-box">
+          <div class="confirmation-icon">✓</div>
+          <h3>Demande envoyée !</h3>
+          <p>Merci pour votre demande de réservation. Nous reviendrons vers vous dans les plus brefs délais pour confirmer la disponibilité et finaliser la réservation.</p>
+          <div class="confirmation-recap" id="confirmationRecap"></div>
+          <a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INFOS PRATIQUES -->
+  <section class="section booking-info-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Bon à savoir</span>
+        <h2>Comment ça marche ?</h2>
+      </div>
+      <div class="how-it-works">
+        <div class="how-step">
+          <div class="how-step-number">1</div>
+          <h4>Choisissez vos dates</h4>
+          <p>Sélectionnez les dates de départ et de retour sur le calendrier. Le tarif s'affiche automatiquement.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">2</div>
+          <h4>Envoyez votre demande</h4>
+          <p>Remplissez vos coordonnées et envoyez votre demande en ligne.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-step-number">3</div>
+          <h4>Confirmation</h4>
+          <p>Nous vous recontactons pour confirmer et organiser le retrait du VL.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">LH <span>LOC</span></a>
+          <p>Location de camion équestre pour le transport de vos chevaux en toute sécurité.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="camion.html">Le Camion</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="reservation.html">Réservation</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Infos pratiques</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Conditions générales</a></li>
+            <li><a href="#">Mentions légales</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>📞 <a href="tel:0745288678">07 45 28 86 78</a></li>
+            <li>📍 Écuries de la Finca</li>
+            <li>1340 Chemin de Bonnafoux</li>
+            <li>13530 Trets</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 LH LOC - Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/reservation.js"></script>
+</body>
+</html>

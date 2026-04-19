@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Découvrez notre camion équestre en détail : galerie photos, caractéristiques techniques, équipements et accessoires inclus.">
+  <title>Le Camion - LH LOC</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav-logo">LH <span>LOC</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="camion.html" class="active">Le Camion</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="reservation.html">Réservation</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="tel:0745288678" class="nav-phone">📞 07 45 28 86 78</a></li>
+        <li><a href="reservation.html" class="btn btn-primary nav-cta">Réserver</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero-badge">Notre véhicule</span>
+      <h1>Le Camion STX AKX</h1>
+      <p>Un véhicule léger (VL) équestre STX AKX de 2024, fiable, confortable et parfaitement équipé pour le transport de vos chevaux.</p>
+    </div>
+  </section>
+
+  <!-- GALERIE PHOTOS -->
+  <section class="section gallery-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Galerie</span>
+        <h2>Découvrez le véhicule en images</h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item gallery-item--large">
+          <img src="images/cheval-camion.jpg" alt="Cheval devant le camion STX AKX" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="images/exterieur-arriere.jpg" alt="Vue arrière du camion STX AKX" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="images/exterieur-cote.jpg" alt="Vue latérale du camion STX AKX" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="images/interieur-stalles.jpg" alt="Intérieur stalles du camion" loading="lazy">
+        </div>
+        <div class="gallery-item">
+          <img src="images/sol-rampe.jpg" alt="Sol antidérapant et rampe d'accès" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <button class="lightbox-prev" id="lightboxPrev">&#10094;</button>
+    <button class="lightbox-next" id="lightboxNext">&#10095;</button>
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+  </div>
+
+  <!-- CARACTERISTIQUES -->
+  <section class="section specs-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Fiche technique</span>
+        <h2>Caractéristiques du véhicule</h2>
+        <p>Toutes les informations techniques de notre camion pour chevaux.</p>
+      </div>
+      <div class="specs-grid">
+        <div class="specs-card">
+          <div class="specs-card-header">
+            <span class="specs-card-icon">🚘</span>
+            <h3>Véhicule</h3>
+          </div>
+          <ul class="specs-list">
+            <li>
+              <span class="specs-label">Marque</span>
+              <span class="specs-value">STX</span>
+            </li>
+            <li>
+              <span class="specs-label">Modèle</span>
+              <span class="specs-value">AKX - Master Horsebox</span>
+            </li>
+            <li>
+              <span class="specs-label">Mise en circulation</span>
+              <span class="specs-value">2024</span>
+            </li>
+            <li>
+              <span class="specs-label">PTAC</span>
+              <span class="specs-value">3 500 kg</span>
+            </li>
+            <li>
+              <span class="specs-label">Poids à vide</span>
+              <span class="specs-value">2 532 kg</span>
+            </li>
+            <li>
+              <span class="specs-label">PTRA</span>
+              <span class="specs-value">6 500 kg</span>
+            </li>
+            <li>
+              <span class="specs-label">Permis requis</span>
+              <span class="specs-value">Permis B</span>
+            </li>
+            <li>
+              <span class="specs-label">Cabine</span>
+              <span class="specs-value">3 places</span>
+            </li>
+            <li>
+              <span class="specs-label">Boîte de vitesses</span>
+              <span class="specs-value">Manuelle 6 vitesses</span>
+            </li>
+          </ul>
+        </div>
+        <div class="specs-card">
+          <div class="specs-card-header">
+            <span class="specs-card-icon">🐴</span>
+            <h3>Partie équestre</h3>
+          </div>
+          <ul class="specs-list">
+            <li>
+              <span class="specs-label">Nombre de places</span>
+              <span class="specs-value">2 chevaux</span>
+            </li>
+            <li>
+              <span class="specs-label">Configuration</span>
+              <span class="specs-value">Stalle - dos à la route</span>
+            </li>
+            <li>
+              <span class="specs-label">Pont arrière</span>
+              <span class="specs-value">Oui</span>
+            </li>
+            <li>
+              <span class="specs-label">Sol</span>
+              <span class="specs-value">Antidérapant</span>
+            </li>
+            <li>
+              <span class="specs-label">Sellerie</span>
+              <span class="specs-value">Grande sellerie aménagée</span>
+            </li>
+            <li>
+              <span class="specs-label">Caméra chevaux</span>
+              <span class="specs-value">Oui</span>
+            </li>
+            <li>
+              <span class="specs-label">Extraction d'air</span>
+              <span class="specs-value">Oui</span>
+            </li>
+          </ul>
+        </div>
+        <div class="specs-card">
+          <div class="specs-card-header">
+            <span class="specs-card-icon">🛡️</span>
+            <h3>Sécurité & confort</h3>
+          </div>
+          <ul class="specs-list">
+            <li>
+              <span class="specs-label">Assurance</span>
+              <span class="specs-value">Tout risque incluse</span>
+            </li>
+            <li>
+              <span class="specs-label">Assistance</span>
+              <span class="specs-value">Equitassistance (panne/accident)</span>
+            </li>
+            <li>
+              <span class="specs-label">Dommages chevaux</span>
+              <span class="specs-value">Couverts</span>
+            </li>
+            <li>
+              <span class="specs-label">GPS</span>
+              <span class="specs-value">Oui</span>
+            </li>
+            <li>
+              <span class="specs-label">Caméra de recul</span>
+              <span class="specs-value">Oui</span>
+            </li>
+            <li>
+              <span class="specs-label">Climatisation</span>
+              <span class="specs-value">Oui</span>
+            </li>
+            <li>
+              <span class="specs-label">Éclairage intérieur</span>
+              <span class="specs-value">Commandé depuis la cabine</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPEMENTS INCLUS -->
+  <section class="section equipments-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Équipements</span>
+        <h2>Ce qui est inclus</h2>
+        <p>Tout le nécessaire pour un transport serein de vos chevaux.</p>
+      </div>
+      <div class="equipments-grid">
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Barres de sécurité</h4>
+            <p>Barres de poitrail et de recul réglables</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Sol antidérapant</h4>
+            <p>Revêtement de sol sécurisé et facile à nettoyer</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Rampe d'accès</h4>
+            <p>Rampe arrière large et sécurisée</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Anneaux d'attache</h4>
+            <p>Points d'attache solides pour la sécurité des chevaux</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Rangement sellerie</h4>
+            <p>Espace dédié pour vos selles et équipements</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Extraction d'air</h4>
+            <p>Système d'extraction d'air pour le confort des chevaux</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Éclairage commandé</h4>
+            <p>Éclairage intérieur commandé depuis la cabine</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Caméra chevaux</h4>
+            <p>Surveillez vos chevaux en temps réel depuis la cabine</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>GPS & caméra de recul</h4>
+            <p>Navigation GPS intégrée et caméra de recul pour les manœuvres</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Climatisation</h4>
+            <p>Climatisation cabine pour votre confort de conduite</p>
+          </div>
+        </div>
+        <div class="equipment-item">
+          <div class="equipment-check">✓</div>
+          <div>
+            <h4>Assurance Equitassistance</h4>
+            <p>Assurance tout risque + assistance panne/accident incluses</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONDITIONS -->
+  <section class="section conditions-section">
+    <div class="container">
+      <div class="conditions-grid">
+        <div class="conditions-info">
+          <span class="overline">Bon à savoir</span>
+          <h2>Conditions de location</h2>
+          <p>Quelques informations pratiques pour préparer votre location.</p>
+        </div>
+        <div class="conditions-list">
+          <div class="condition-item">
+            <div class="condition-number">1</div>
+            <div>
+              <h4>Permis B obligatoire</h4>
+              <p>21 ans minimum, permis obtenu depuis 3 ans ou plus.</p>
+            </div>
+          </div>
+          <div class="condition-item">
+            <div class="condition-number">2</div>
+            <div>
+              <h4>Caution de 3 500€</h4>
+              <p>Chèque de caution demandé au retrait, restitué au retour du véhicule en bon état.</p>
+            </div>
+          </div>
+          <div class="condition-item">
+            <div class="condition-number">3</div>
+            <div>
+              <h4>Non fumeur & interdit aux chiens</h4>
+              <p>Le véhicule est strictement non fumeur. Les chiens ne sont pas autorisés à l'intérieur.</p>
+            </div>
+          </div>
+          <div class="condition-item">
+            <div class="condition-number">4</div>
+            <div>
+              <h4>Propreté & carburant</h4>
+              <p>Le véhicule doit être rendu propre (partie équestre nettoyée) et avec le plein de carburant.</p>
+            </div>
+          </div>
+          <div class="condition-item">
+            <div class="condition-number">5</div>
+            <div>
+              <h4>Franchise : 3 500€</h4>
+              <p>Franchise maximale en cas de sinistre. Dommages causés par les chevaux couverts par l'assurance.</p>
+            </div>
+          </div>
+          <div class="condition-item">
+            <div class="condition-number">6</div>
+            <div>
+              <h4>Annulation flexible</h4>
+              <p>Conditions d'annulation flexibles. Contactez-nous pour plus de détails.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section">
+    <div class="container">
+      <h2>Convaincu ? Réservez dès maintenant</h2>
+      <p>Vérifiez la disponibilité du VL et réservez en quelques clics.</p>
+      <div class="cta-buttons">
+        <a href="reservation.html" class="btn btn-primary">Réserver</a>
+        <a href="contact.html" class="btn btn-secondary">Poser une question</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">LH <span>LOC</span></a>
+          <p>Location de camion équestre pour le transport de vos chevaux en toute sécurité.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="camion.html">Le Camion</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="reservation.html">Réservation</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Infos pratiques</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Conditions générales</a></li>
+            <li><a href="#">Mentions légales</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>📞 <a href="tel:0745288678">07 45 28 86 78</a></li>
+            <li>📍 Écuries de la Finca</li>
+            <li>1340 Chemin de Bonnafoux</li>
+            <li>13530 Trets</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 LH LOC - Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

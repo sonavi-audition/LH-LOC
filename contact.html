@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contactez LH LOC pour toute question sur la location de notre camion équestre. Formulaire, téléphone et localisation.">
+  <title>Contact - LH LOC</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav-logo">LH <span>LOC</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="camion.html">Le Camion</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="reservation.html">Réservation</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li><a href="tel:0745288678" class="nav-phone">📞 07 45 28 86 78</a></li>
+        <li><a href="reservation.html" class="btn btn-primary nav-cta">Réserver</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero-badge">Nous contacter</span>
+      <h1>Une question ?</h1>
+      <p>N'hésitez pas à nous contacter par téléphone, email ou via le formulaire ci-dessous.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section contact-section">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- Formulaire -->
+        <div class="contact-form-wrapper">
+          <h2>Envoyez-nous un message</h2>
+          <p class="contact-form-intro">Remplissez le formulaire et nous vous répondrons dans les meilleurs délais.</p>
+          <form class="contact-form" id="contactForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="contactLastName">Nom *</label>
+                <input type="text" id="contactLastName" name="lastName" required placeholder="Votre nom">
+              </div>
+              <div class="form-group">
+                <label for="contactFirstName">Prénom *</label>
+                <input type="text" id="contactFirstName" name="firstName" required placeholder="Votre prénom">
+              </div>
+              <div class="form-group">
+                <label for="contactEmail">Email *</label>
+                <input type="email" id="contactEmail" name="email" required placeholder="votre@email.com">
+              </div>
+              <div class="form-group">
+                <label for="contactPhone">Téléphone</label>
+                <input type="tel" id="contactPhone" name="phone" placeholder="06 00 00 00 00">
+              </div>
+              <div class="form-group full-width">
+                <label for="contactSubject">Sujet *</label>
+                <select id="contactSubject" name="subject" required>
+                  <option value="" disabled selected>Choisir un sujet</option>
+                  <option value="information">Demande d'information</option>
+                  <option value="devis">Demande de devis</option>
+                  <option value="reservation">Question sur une réservation</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label for="contactMessage">Message *</label>
+                <textarea id="contactMessage" name="message" rows="5" required placeholder="Votre message..."></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Envoyer le message</button>
+          </form>
+
+          <!-- Confirmation -->
+          <div class="contact-success" id="contactSuccess" style="display: none;">
+            <div class="confirmation-icon">✓</div>
+            <h3>Message envoyé !</h3>
+            <p>Merci pour votre message. Nous vous répondrons dans les plus brefs délais.</p>
+            <button class="btn btn-outline" id="newMessage">Envoyer un autre message</button>
+          </div>
+        </div>
+
+        <!-- Infos de contact -->
+        <div class="contact-info-sidebar">
+          <div class="contact-info-card">
+            <h3>Coordonnées</h3>
+            <div class="contact-info-list">
+              <div class="contact-info-item">
+                <div class="contact-info-icon">📞</div>
+                <div>
+                  <h4>Téléphone</h4>
+                  <p><a href="tel:0745288678">07 45 28 86 78</a></p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <div class="contact-info-icon">📍</div>
+                <div>
+                  <h4>Localisation</h4>
+                  <p>Écuries de la Finca</p>
+                  <p>1340 Chemin de Bonnafoux</p>
+                  <p>13530 Trets</p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <div class="contact-info-icon">🕒</div>
+                <div>
+                  <h4>Horaires</h4>
+                  <p>Lun - Ven : 8h - 19h</p>
+                  <p>Sam - Dim : 9h - 18h</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-card contact-info-card--highlight">
+            <h3>Réservation rapide</h3>
+            <p>Vous savez déjà quand vous avez besoin du véhicule ? Réservez directement en ligne.</p>
+            <a href="reservation.html" class="btn btn-primary btn-full">Réserver en ligne</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="section map-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Localisation</span>
+        <h2>Où nous trouver</h2>
+        <p>Retrait et retour du camion pour chevaux à l'adresse suivante.</p>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-placeholder-content">
+          <span>📍</span>
+          <p>Carte à intégrer</p>
+          <small>Ajoutez votre iframe Google Maps ici</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo">LH <span>LOC</span></a>
+          <p>Location de camion équestre pour le transport de vos chevaux en toute sécurité.</p>
+        </div>
+        <div>
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="camion.html">Le Camion</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
+            <li><a href="reservation.html">Réservation</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Infos pratiques</h4>
+          <ul>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="#">Conditions générales</a></li>
+            <li><a href="#">Mentions légales</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>📞 <a href="tel:0745288678">07 45 28 86 78</a></li>
+            <li>📍 Écuries de la Finca</li>
+            <li>1340 Chemin de Bonnafoux</li>
+            <li>13530 Trets</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 LH LOC - Tous droits réservés</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>
