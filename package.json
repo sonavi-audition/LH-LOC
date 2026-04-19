@@ -1,0 +1,25 @@
+{
+  "name": "lh-loc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sonavi-audition/LH-LOC.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sonavi-audition/LH-LOC/issues"
+  },
+  "homepage": "https://github.com/sonavi-audition/LH-LOC#readme",
+  "dependencies": {
+    "@sparticuz/chromium": "^147.0.1",
+    "puppeteer-core": "^24.41.0"
+  }
+}
