@@ -238,13 +238,7 @@ module.exports = async function handler(req, res) {
     const result = {
       unavailableDates: [...new Set(unavailableDates)].sort(),
       lastUpdated: new Date().toISOString(),
-      source: 'horsicar',
-      _debug: {
-        currentMonth: calendarData.monthTitle,
-        nextMonth: nextMonthData.monthTitle || 'not-found',
-        nextMonthDays: nextMonthData.unavailableDays,
-        clickResult: clicked
-      }
+      source: 'horsicar'
     };
 
     // Mettre en cache
