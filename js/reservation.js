@@ -346,12 +346,29 @@
 
   // --- Chargement des disponibilités depuis Horsicar ---
   async function loadUnavailableDates() {
-    // Afficher une barre de chargement animée
+    // Afficher une barre de progression 0→100%
     calendarDays.innerHTML = `
       <div class="calendar-loading">
-        <div class="loading-bar"><div class="loading-bar-fill"></div></div>
-        <p>Chargement des disponibilités…</p>
+        <div class="loading-bar"><div class="loading-bar-fill" id="loadingFill"></div></div>
+        <p id="loadingText">Chargement des disponibilités… 0%</p>
       </div>`;
+
+    const fill = document.getElementById('loadingFill');
+    const text = document.getElementById('loadingText');
+    let progress = 0;
+
+    // Simuler la progression : accélère vite au début, ralentit vers la fin
+    const progressInterval = setInterval(() => {
+      if (progress < 70) {
+        progress += 3;
+      } else if (progress < 90) {
+        progress += 0.5;
+      } else if (progress < 98) {
+        progress += 0.2;
+      }
+      if (fill) fill.style.width = progress + '%';
+      if (text) text.textContent = `Chargement des disponibilités… ${Math.round(progress)}%`;
+    }, 100);
 
     try {
       const response = await fetch('/api/disponibilites');
@@ -362,6 +379,12 @@
     } catch (e) {
       // En cas d'erreur réseau, le calendrier reste sans dates bloquées
     }
+
+    // Compléter à 100% avant d'afficher le calendrier
+    clearInterval(progressInterval);
+    if (fill) fill.style.width = '100%';
+    if (text) text.textContent = 'Chargement des disponibilités… 100%';
+    await new Promise(r => setTimeout(r, 300));
 
     renderCalendar();
   }
