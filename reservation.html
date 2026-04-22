@@ -25,6 +25,56 @@
   <meta name="twitter:description" content="Consultez les disponibilités et réservez le camion équestre en quelques clics.">
   <meta name="twitter:image" content="https://lhloc.fr/images/cheval-camion.jpg">
 
+  <!-- Service Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Location de camion équestre",
+    "name": "Réservation camion équestre LH LOC",
+    "description": "Réservation en ligne d'un camion équestre STX AKX 2 places à Trets (13). Calendrier de disponibilités en temps réel.",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "LH LOC",
+      "telephone": "+33745288678",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1340 Chemin de Bonnafoux, Écuries de la Finca",
+        "addressLocality": "Trets",
+        "postalCode": "13530",
+        "addressCountry": "FR"
+      }
+    },
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": "Provence-Alpes-Côte d'Azur"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "130",
+      "highPrice": "135",
+      "priceCurrency": "EUR"
+    },
+    "potentialAction": {
+      "@type": "ReserveAction",
+      "target": "https://lhloc.fr/reservation.html",
+      "name": "Réserver le camion équestre"
+    }
+  }
+  </script>
+
+  <!-- Breadcrumb Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://lhloc.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Réservation", "item": "https://lhloc.fr/reservation.html" }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -53,9 +103,14 @@
   <!-- PAGE HERO -->
   <section class="page-hero">
     <div class="container">
+      <nav class="breadcrumbs" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Réservation</span>
+      </nav>
       <span class="hero-badge">Réservation en ligne</span>
       <h1>Réservez le véhicule</h1>
-      <p>Sélectionnez vos dates, consultez le tarif estimé et envoyez votre demande de réservation.</p>
+      <p>Sélectionnez vos dates, consultez le tarif estimé et envoyez votre demande de réservation. Consultez aussi la <a href="camion.html">fiche technique du camion</a> ou la <a href="tarifs.html">grille tarifaire complète</a>.</p>
     </div>
   </section>
 
@@ -241,8 +296,8 @@
           <h4>Infos pratiques</h4>
           <ul>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="#">Conditions générales</a></li>
-            <li><a href="#">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
           </ul>
         </div>
         <div>

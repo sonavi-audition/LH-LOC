@@ -49,6 +49,18 @@
   }
   </script>
 
+  <!-- Breadcrumb Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://lhloc.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Contact", "item": "https://lhloc.fr/contact.html" }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -77,9 +89,14 @@
   <!-- PAGE HERO -->
   <section class="page-hero">
     <div class="container">
+      <nav class="breadcrumbs" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Contact</span>
+      </nav>
       <span class="hero-badge">Nous contacter</span>
-      <h1>Une question ?</h1>
-      <p>N'hésitez pas à nous contacter par téléphone, email ou via le formulaire ci-dessous.</p>
+      <h1>Une question sur la location ?</h1>
+      <p>N'hésitez pas à nous contacter par téléphone, email ou via le formulaire ci-dessous. Vous pouvez aussi <a href="reservation.html">réserver directement en ligne</a> ou consulter la <a href="camion.html">fiche technique du camion</a>.</p>
     </div>
   </section>
 
@@ -219,8 +236,8 @@
           <h4>Infos pratiques</h4>
           <ul>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="#">Conditions générales</a></li>
-            <li><a href="#">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
           </ul>
         </div>
         <div>

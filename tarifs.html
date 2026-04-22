@@ -68,6 +68,18 @@
   }
   </script>
 
+  <!-- Breadcrumb Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://lhloc.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Tarifs", "item": "https://lhloc.fr/tarifs.html" }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -96,9 +108,14 @@
   <!-- PAGE HERO -->
   <section class="page-hero">
     <div class="container">
+      <nav class="breadcrumbs" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Tarifs</span>
+      </nav>
       <span class="hero-badge">Nos tarifs</span>
       <h1>Des prix clairs et transparents</h1>
-      <p>Choisissez la formule adaptée à vos besoins. Tous nos tarifs incluent l'assurance du véhicule.</p>
+      <p>Choisissez la formule adaptée à vos besoins. Tous nos tarifs incluent l'assurance du véhicule. Découvrez aussi la <a href="camion.html">fiche technique du camion</a> ou <a href="reservation.html">réservez en ligne</a>.</p>
     </div>
   </section>
 
@@ -331,8 +348,8 @@
           <h4>Infos pratiques</h4>
           <ul>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="#">Conditions générales</a></li>
-            <li><a href="#">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
           </ul>
         </div>
         <div>

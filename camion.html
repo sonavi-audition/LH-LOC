@@ -56,6 +56,18 @@
   }
   </script>
 
+  <!-- Breadcrumb Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://lhloc.fr/" },
+      { "@type": "ListItem", "position": 2, "name": "Le Camion", "item": "https://lhloc.fr/camion.html" }
+    ]
+  }
+  </script>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -84,9 +96,14 @@
   <!-- PAGE HERO -->
   <section class="page-hero">
     <div class="container">
+      <nav class="breadcrumbs" aria-label="Fil d'Ariane">
+        <a href="index.html">Accueil</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Le Camion</span>
+      </nav>
       <span class="hero-badge">Notre véhicule</span>
       <h1>Le Camion STX AKX</h1>
-      <p>Un véhicule léger (VL) équestre STX AKX de 2024, fiable, confortable et parfaitement équipé pour le transport de vos chevaux.</p>
+      <p>Un véhicule léger (VL) équestre STX AKX de 2024, fiable, confortable et parfaitement équipé pour le transport de vos chevaux. Découvrez aussi nos <a href="tarifs.html">tarifs de location</a> ou vérifiez les <a href="reservation.html">disponibilités en temps réel</a>.</p>
     </div>
   </section>
 
@@ -490,8 +507,8 @@
           <h4>Infos pratiques</h4>
           <ul>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="#">Conditions générales</a></li>
-            <li><a href="#">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales</a></li>
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
           </ul>
         </div>
         <div>
