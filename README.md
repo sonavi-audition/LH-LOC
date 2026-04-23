@@ -134,6 +134,86 @@ git push origin main
 
 Avant de pousser, verifier que la branche locale active est bien `main`.
 
+## Travailler sur deux postes
+
+GitHub est le point central de synchronisation entre le PC du bureau, le PC portable et Vercel.
+
+Principe :
+
+```text
+PC bureau <-> GitHub main <-> PC portable
+                     |
+                     v
+                  Vercel
+```
+
+Ne pas synchroniser le dossier du projet avec OneDrive, Dropbox ou Google Drive. Le dossier `.git` doit etre gere uniquement par Git.
+
+### Premiere installation sur un nouveau poste
+
+```bash
+git clone https://github.com/sonavi-audition/LH-LOC.git
+cd LH-LOC
+git switch main
+git config --local user.name "Fabien Haddad"
+git config --local user.email "contact@sonavi-audition.fr"
+npm.cmd install
+```
+
+### Quand je commence a travailler
+
+Toujours recuperer la derniere version avant de modifier le site :
+
+```bash
+git switch main
+git pull origin main
+git status
+```
+
+Si `git status` indique que le dossier est propre, il est possible de commencer les modifications.
+
+### Quand j'ai termine
+
+Verifier, enregistrer et envoyer les changements :
+
+```bash
+git status
+git add .
+git commit -m "Description courte du changement"
+git push origin main
+```
+
+Apres le `git push`, Vercel redeploie automatiquement le site public.
+
+### Si je change de poste
+
+Avant de quitter un poste, pousser les changements :
+
+```bash
+git push origin main
+```
+
+En arrivant sur l'autre poste, recuperer les changements :
+
+```bash
+git pull origin main
+```
+
+Si un changement n'est pas encore termine, il vaut mieux faire un commit clair avant de changer de poste, meme si le travail est partiel :
+
+```bash
+git add .
+git commit -m "Travail en cours sur ..."
+git push origin main
+```
+
+### A eviter
+
+- Modifier le meme fichier sur les deux postes sans avoir fait `git pull`.
+- Laisser des changements non commit sur un poste puis travailler sur l'autre.
+- Travailler sur `master` : la production utilise `main`.
+- Modifier directement dans Vercel si le changement doit rester durable.
+
 ## Points de vigilance
 
 - Ne pas modifier les identifiants Formspree sans verifier le compte associe.
