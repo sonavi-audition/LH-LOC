@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grille Tarifaire — Liza Haddad × Collaborations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f1e8;
+      --cream-dark: #ede2d0;
+      --paper: #fbf7f0;
+      --brown: #4a342a;
+      --brown-soft: #6b4f3f;
+      --gold: #b08a4f;
+      --gold-light: #d4b483;
+      --ink: #2a1f18;
+      --muted: #8a7a6a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: var(--paper);
+      padding: 22mm 20mm 18mm;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6mm;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+    }
+
+    .page::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2mm;
+      background: var(--brown);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 10mm;
+      border-bottom: 1px solid var(--cream-dark);
+      margin-bottom: 12mm;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .monogram {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 42pt;
+      color: var(--brown);
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+
+    .monogram .amp {
+      color: var(--gold);
+      font-style: italic;
+      margin: 0 4px;
+    }
+
+    .tagline {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.35em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 4mm;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 8pt;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .doc-meta .label {
+      font-weight: 500;
+      color: var(--brown);
+    }
+
+    .doc-meta .value {
+      margin-top: 2mm;
+      color: var(--brown-soft);
+    }
+
+    /* Title */
+    .title-block {
+      text-align: center;
+      margin-bottom: 10mm;
+    }
+
+    .eyebrow {
+      font-size: 9pt;
+      letter-spacing: 0.5em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 4mm;
+    }
+
+    .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36pt;
+      font-weight: 500;
+      color: var(--brown);
+      line-height: 1.05;
+      letter-spacing: 0.01em;
+    }
+
+    .title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 6mm 0;
+    }
+
+    .ornament .line {
+      flex: 0 0 30mm;
+      height: 1px;
+      background: var(--gold-light);
+    }
+
+    .ornament .dot {
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin: 0 6mm;
+    }
+
+    .subtitle {
+      font-size: 10pt;
+      color: var(--brown-soft);
+      letter-spacing: 0.08em;
+      max-width: 130mm;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Profile band */
+    .profile {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      padding: 8mm 4mm;
+      margin-bottom: 12mm;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 0 4mm;
+      border-right: 1px solid var(--cream-dark);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22pt;
+      font-weight: 600;
+      color: var(--brown);
+      line-height: 1;
+    }
+
+    .stat .num small {
+      font-size: 14pt;
+      color: var(--gold);
+    }
+
+    .stat .label {
+      font-size: 7.5pt;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 3mm;
+    }
+
+    /* Pricing */
+    .section-title {
+      text-align: center;
+      margin-bottom: 8mm;
+    }
+
+    .section-title .eyebrow { margin-bottom: 3mm; }
+
+    .section-title h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22pt;
+      font-weight: 500;
+      color: var(--brown);
+    }
+
+    .packages {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8mm;
+      margin-bottom: 12mm;
+    }
+
+    .package {
+      background: #fff;
+      border: 1px solid var(--cream-dark);
+      padding: 10mm 8mm;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .package.featured {
+      background: var(--brown);
+      color: var(--cream);
+      border-color: var(--brown);
+    }
+
+    .package.featured::before {
+      content: 'SIGNATURE';
+      position: absolute;
+      top: -3mm;
+      right: 6mm;
+      background: var(--gold);
+      color: #fff;
+      font-size: 7pt;
+      letter-spacing: 0.3em;
+      padding: 1.5mm 4mm;
+      font-weight: 500;
+    }
+
+    .pkg-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18pt;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 1mm;
+    }
+
+    .package .pkg-name { color: var(--brown); }
+    .package.featured .pkg-name { color: var(--gold-light); }
+
+    .pkg-sub {
+      font-size: 8pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6mm;
+    }
+
+    .package.featured .pkg-sub { color: var(--gold-light); opacity: 0.8; }
+
+    .pkg-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36pt;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--brown);
+      margin-bottom: 1mm;
+    }
+
+    .package.featured .pkg-price { color: #fff; }
+
+    .pkg-price .currency {
+      font-size: 22pt;
+      vertical-align: top;
+      color: var(--gold);
+      margin-left: 2px;
+    }
+
+    .pkg-period {
+      font-size: 9pt;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 7mm;
+    }
+
+    .package.featured .pkg-period { color: var(--gold-light); opacity: 0.85; }
+
+    .pkg-divider {
+      height: 1px;
+      background: var(--cream-dark);
+      margin-bottom: 6mm;
+    }
+
+    .package.featured .pkg-divider { background: var(--brown-soft); }
+
+    .pkg-list {
+      list-style: none;
+      flex: 1;
+    }
+
+    .pkg-list li {
+      display: flex;
+      align-items: flex-start;
+      font-size: 10pt;
+      line-height: 1.6;
+      padding: 2.5mm 0;
+      color: var(--ink);
+    }
+
+    .package.featured .pkg-list li { color: var(--cream); }
+
+    .pkg-list li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin: 7px 8px 0 0;
+      flex-shrink: 0;
+    }
+
+    .pkg-list li strong {
+      font-weight: 500;
+      color: var(--brown);
+    }
+
+    .package.featured .pkg-list li strong { color: #fff; }
+
+    /* Contact */
+    .contact {
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      padding: 10mm 8mm;
+      text-align: center;
+      margin-bottom: 6mm;
+    }
+
+    .contact .eyebrow { margin-bottom: 4mm; }
+
+    .contact h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20pt;
+      font-weight: 500;
+      color: var(--brown);
+      margin-bottom: 5mm;
+    }
+
+    .contact-row {
+      display: flex;
+      justify-content: center;
+      gap: 12mm;
+      flex-wrap: wrap;
+      font-size: 9.5pt;
+      color: var(--brown-soft);
+      letter-spacing: 0.05em;
+    }
+
+    .contact-row .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5mm;
+    }
+
+    .contact-row .label {
+      font-size: 7.5pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .contact-row .value {
+      font-weight: 500;
+      color: var(--brown);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 7.5pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 6mm;
+    }
+
+    .footer .gold-dot {
+      color: var(--gold);
+      margin: 0 4mm;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { box-shadow: none; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand">
+        <div class="monogram">L<span class="amp">·</span>H</div>
+        <div class="tagline">Univers Équestre &nbsp;·&nbsp; Création de contenu</div>
+      </div>
+      <div class="doc-meta">
+        <div class="label">Grille Tarifaire</div>
+        <div class="value">Édition Mai 2026</div>
+      </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="title-block">
+      <div class="eyebrow">Collaborations &amp; Partenariats</div>
+      <h1 class="title">Liza <em>Haddad</em></h1>
+      <div class="ornament">
+        <span class="line"></span>
+        <span class="dot"></span>
+        <span class="line"></span>
+      </div>
+      <p class="subtitle">
+        Créatrice de contenu dédiée à l'univers de l'équitation, je propose aux marques
+        une mise en lumière soignée, authentique et alignée avec les valeurs du cheval.
+      </p>
+    </div>
+
+    <!-- PROFILE STATS -->
+    <div class="profile">
+      <div class="stat">
+        <div class="num">50K<small>+</small></div>
+        <div class="label">Abonnés Instagram</div>
+      </div>
+      <div class="stat">
+        <div class="num">@liza_simple</div>
+        <div class="label">Profil officiel</div>
+      </div>
+      <div class="stat">
+        <div class="num">Équitation</div>
+        <div class="label">Niche &amp; Audience</div>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <div class="section-title">
+      <div class="eyebrow">Forfaits Mensuels</div>
+      <h2>Nos Collaborations</h2>
+    </div>
+
+    <div class="packages">
+      <!-- Forfait Essentiel -->
+      <div class="package">
+        <div class="pkg-name">Essentiel</div>
+        <div class="pkg-sub">Présence régulière</div>
+        <div class="pkg-price">500<span class="currency">€</span></div>
+        <div class="pkg-period">par mois</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-list">
+          <li><span><strong>2 posts</strong> sur le feed Instagram</span></li>
+          <li><span><strong>5 stories</strong> dédiées à la marque</span></li>
+          <li><span>Mise en avant produit en situation</span></li>
+          <li><span>Validation des contenus avant publication</span></li>
+        </ul>
+      </div>
+
+      <!-- Forfait Signature -->
+      <div class="package featured">
+        <div class="pkg-name">Signature</div>
+        <div class="pkg-sub">Visibilité augmentée</div>
+        <div class="pkg-price">700<span class="currency">€</span></div>
+        <div class="pkg-period">par mois</div>
+        <div class="pkg-divider"></div>
+        <ul class="pkg-list">
+          <li><span><strong>2 posts</strong> sur le feed Instagram</span></li>
+          <li><span><strong>5 stories</strong> dédiées à la marque</span></li>
+          <li><span><strong>1 Reel</strong> créatif &amp; engageant</span></li>
+          <li><span>Format vidéo idéal pour la portée organique</span></li>
+          <li><span>Validation des contenus avant publication</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="contact">
+      <div class="eyebrow">Restons en contact</div>
+      <h3>Pour toute demande de collaboration</h3>
+      <div class="contact-row">
+        <div class="item">
+          <span class="label">Nom</span>
+          <span class="value">Liza Haddad</span>
+        </div>
+        <div class="item">
+          <span class="label">Instagram</span>
+          <span class="value">@liza_simple</span>
+        </div>
+        <div class="item">
+          <span class="label">Email</span>
+          <span class="value">lizalevy3@gmail.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Tarifs indicatifs <span class="gold-dot">◆</span> Toute collaboration fait l'objet d'un accord écrit
+    </div>
+  </div>
+</body>
+</html>
