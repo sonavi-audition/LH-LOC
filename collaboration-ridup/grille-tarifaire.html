@@ -32,12 +32,14 @@
 
     .page {
       width: 210mm;
-      min-height: 297mm;
+      height: 297mm;
       margin: 0 auto;
       background: var(--paper);
-      padding: 22mm 20mm 18mm;
+      padding: 14mm 18mm 12mm;
       position: relative;
       overflow: hidden;
+      page-break-after: avoid;
+      break-after: avoid;
     }
 
     .page::before {
@@ -61,9 +63,9 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      padding-bottom: 10mm;
+      padding-bottom: 5mm;
       border-bottom: 1px solid var(--cream-dark);
-      margin-bottom: 12mm;
+      margin-bottom: 6mm;
     }
 
     .brand {
@@ -74,7 +76,7 @@
     .monogram {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 600;
-      font-size: 42pt;
+      font-size: 32pt;
       color: var(--brown);
       letter-spacing: 0.02em;
       line-height: 1;
@@ -88,11 +90,11 @@
 
     .tagline {
       font-family: 'Montserrat', sans-serif;
-      font-size: 8pt;
+      font-size: 7.5pt;
       letter-spacing: 0.35em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-top: 4mm;
+      margin-top: 2.5mm;
     }
 
     .doc-meta {
@@ -116,20 +118,20 @@
     /* Title */
     .title-block {
       text-align: center;
-      margin-bottom: 10mm;
+      margin-bottom: 6mm;
     }
 
     .eyebrow {
-      font-size: 9pt;
+      font-size: 8.5pt;
       letter-spacing: 0.5em;
       color: var(--gold);
       text-transform: uppercase;
-      margin-bottom: 4mm;
+      margin-bottom: 2.5mm;
     }
 
     .title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 36pt;
+      font-size: 28pt;
       font-weight: 500;
       color: var(--brown);
       line-height: 1.05;
@@ -145,7 +147,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 6mm 0;
+      margin: 3mm 0;
     }
 
     .ornament .line {
@@ -163,12 +165,12 @@
     }
 
     .subtitle {
-      font-size: 10pt;
+      font-size: 9pt;
       color: var(--brown-soft);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       max-width: 130mm;
       margin: 0 auto;
-      line-height: 1.7;
+      line-height: 1.5;
     }
 
     /* Profile band */
@@ -178,8 +180,10 @@
       gap: 0;
       background: var(--cream);
       border: 1px solid var(--cream-dark);
-      padding: 8mm 4mm;
-      margin-bottom: 12mm;
+      padding: 5mm 4mm;
+      margin-bottom: 7mm;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .stat {
@@ -192,36 +196,36 @@
 
     .stat .num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22pt;
+      font-size: 18pt;
       font-weight: 600;
       color: var(--brown);
       line-height: 1;
     }
 
     .stat .num small {
-      font-size: 14pt;
+      font-size: 12pt;
       color: var(--gold);
     }
 
     .stat .label {
-      font-size: 7.5pt;
+      font-size: 7pt;
       letter-spacing: 0.25em;
       color: var(--muted);
       text-transform: uppercase;
-      margin-top: 3mm;
+      margin-top: 2mm;
     }
 
     /* Pricing */
     .section-title {
       text-align: center;
-      margin-bottom: 8mm;
+      margin-bottom: 5mm;
     }
 
-    .section-title .eyebrow { margin-bottom: 3mm; }
+    .section-title .eyebrow { margin-bottom: 2mm; }
 
     .section-title h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 22pt;
+      font-size: 18pt;
       font-weight: 500;
       color: var(--brown);
     }
@@ -229,17 +233,21 @@
     .packages {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8mm;
-      margin-bottom: 12mm;
+      gap: 6mm;
+      margin-bottom: 7mm;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .package {
       background: #fff;
       border: 1px solid var(--cream-dark);
-      padding: 10mm 8mm;
+      padding: 7mm 6mm;
       position: relative;
       display: flex;
       flex-direction: column;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
     .package.featured {
@@ -263,7 +271,7 @@
 
     .pkg-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18pt;
+      font-size: 16pt;
       font-weight: 600;
       letter-spacing: 0.02em;
       margin-bottom: 1mm;
@@ -273,18 +281,18 @@
     .package.featured .pkg-name { color: var(--gold-light); }
 
     .pkg-sub {
-      font-size: 8pt;
+      font-size: 7.5pt;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 6mm;
+      margin-bottom: 4mm;
     }
 
     .package.featured .pkg-sub { color: var(--gold-light); opacity: 0.8; }
 
     .pkg-price {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 36pt;
+      font-size: 28pt;
       font-weight: 600;
       line-height: 1;
       color: var(--brown);
@@ -294,18 +302,18 @@
     .package.featured .pkg-price { color: #fff; }
 
     .pkg-price .currency {
-      font-size: 22pt;
+      font-size: 18pt;
       vertical-align: top;
       color: var(--gold);
       margin-left: 2px;
     }
 
     .pkg-period {
-      font-size: 9pt;
+      font-size: 8.5pt;
       color: var(--muted);
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      margin-bottom: 7mm;
+      margin-bottom: 4mm;
     }
 
     .package.featured .pkg-period { color: var(--gold-light); opacity: 0.85; }
@@ -313,7 +321,7 @@
     .pkg-divider {
       height: 1px;
       background: var(--cream-dark);
-      margin-bottom: 6mm;
+      margin-bottom: 4mm;
     }
 
     .package.featured .pkg-divider { background: var(--brown-soft); }
@@ -326,9 +334,9 @@
     .pkg-list li {
       display: flex;
       align-items: flex-start;
-      font-size: 10pt;
-      line-height: 1.6;
-      padding: 2.5mm 0;
+      font-size: 9pt;
+      line-height: 1.5;
+      padding: 1.5mm 0;
       color: var(--ink);
     }
 
@@ -355,19 +363,21 @@
     .contact {
       background: var(--cream);
       border: 1px solid var(--cream-dark);
-      padding: 10mm 8mm;
+      padding: 6mm 8mm;
       text-align: center;
-      margin-bottom: 6mm;
+      margin-bottom: 4mm;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
 
-    .contact .eyebrow { margin-bottom: 4mm; }
+    .contact .eyebrow { margin-bottom: 2.5mm; }
 
     .contact h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20pt;
+      font-size: 16pt;
       font-weight: 500;
       color: var(--brown);
-      margin-bottom: 5mm;
+      margin-bottom: 3.5mm;
     }
 
     .contact-row {
@@ -402,11 +412,11 @@
     /* Footer */
     .footer {
       text-align: center;
-      font-size: 7.5pt;
+      font-size: 7pt;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--muted);
-      padding-top: 6mm;
+      padding-top: 3mm;
     }
 
     .footer .gold-dot {
